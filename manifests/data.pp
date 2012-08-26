@@ -25,23 +25,28 @@ class haproxy::data {
                                   }
     }
     Debian: {
-      $haproxy_global_options   = { 'log'     => "127.0.0.1 local0",
-                                    'chroot'  => '/var/lib/haproxy',
-                                    'pidfile' => '/var/run/haproxy.pid',
-                                    'maxconn' => '4000',
+      $haproxy_global_options   = { 'log'     => '127.0.0.1 local0',
+                                    'log'     => '127.0.0.1 local1 notice',
+                                    '#chroot'  => '/var/lib/haproxy',
+                                    'maxconn' => '4096',
                                     'user'    => 'haproxy',
                                     'group'   => 'haproxy',
                                     'daemon'  => '',
-                                    'stats'   => 'socket /var/lib/haproxy/stats'
+                                    '#debug'  => '',
+                                    '#quiet'  => '',
                                   }
       $haproxy_defaults_options = { 'log'     => 'global',
-                                    'stats'   => 'enable',
+                                    'mode'    => 'htpp',
                                     'option'  => 'redispatch',
+                                    'option'  => 'httplog',
+                                    'option'  => 'dontlognull',
                                     'retries' => '3',
-                                    'timeout' => ['http-request 10s', 'queue 1m', 'connect 10s', 'client 1m', 'server 1m', 'check 10s'],
-                                    'maxconn' => '8000'
+                                    'maxconn' => '2000',
+                                    'contimeout' => '5000',
+                                    'clitimeout' => '50000',
+                                    'srvtimeout' => '50000',
                                   }
     }
-    default: { fail("The $::operatingsystem operating system is not supported with the haproxy module") }
+    default: { fail("The ${::operatingsystem} operating system is not supported with the haproxy module") }
   }
 }
