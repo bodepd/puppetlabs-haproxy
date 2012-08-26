@@ -108,6 +108,7 @@ class haproxy (
       target  => '/etc/haproxy/haproxy.cfg',
       order   => '01',
       content => "# This file managed by Puppet\n",
+      notify  => Service['haproxy'],
     }
 
     # Most of the variables are used inside the haproxy-base.cfg.erb template
@@ -115,6 +116,7 @@ class haproxy (
       target  => '/etc/haproxy/haproxy.cfg',
       order   => '10',
       content => template('haproxy/haproxy-base.cfg.erb'),
+      notify  => Service['haproxy'],
     }
   }
 
