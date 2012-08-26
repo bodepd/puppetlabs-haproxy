@@ -69,7 +69,31 @@ class haproxy (
     },
     name => 'haproxy',
   }
-  
+
+  case $::osfamily {
+    Debian: {
+
+      # needed in the debian template
+      if $enable {
+        $status = 1
+      } else {
+        $status = 0
+      }
+
+      file { '/etc/default/haproxy':
+        ensure  => present,
+        content => template('haproxy/debian-default.erb')
+      }
+
+    }
+    Redhat: {
+      # no os-specific things for redhat need to be done, but it is supported
+    }
+    default: {
+      fail("The $::operatingsystem operating system is not supported with the haproxy module")
+    }
+  }
+
   if $enable {
     concat { '/etc/haproxy/haproxy.cfg':
       owner   => '0',
@@ -94,6 +118,10 @@ class haproxy (
     }
   }
 
+  file { '/var/lib/haproxy':
+    ensure => directory
+  }
+
   service { 'haproxy':
     ensure => $enable ? {
       true  => running,
@@ -106,6 +134,6 @@ class haproxy (
     name       => 'haproxy',
     hasrestart => true,
     hasstatus  => true,
-    require    => Concat['/etc/haproxy/haproxy.cfg'],
+    require    => [Concat['/etc/haproxy/haproxy.cfg'],File['/var/lib/haproxy'],Package['haproxy']],
   }
 }
