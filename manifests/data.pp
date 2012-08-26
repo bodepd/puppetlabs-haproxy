@@ -36,7 +36,7 @@ class haproxy::data {
                                     '#quiet'  => '',
                                   }
       $haproxy_defaults_options = { 'log'     => 'global',
-                                    'mode'    => 'htpp',
+                                    'mode'    => 'http',
                                     'option'  => 'redispatch',
                                     'option'  => 'httplog',
                                     'option'  => 'dontlognull',
