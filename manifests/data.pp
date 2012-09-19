@@ -33,7 +33,7 @@ class haproxy::data {
       $haproxy_global_options   = [ 'log 127.0.0.1 local0',
                                     'log 127.0.0.1 local1 notice',
                                     '#chroot /var/lib/haproxy',
-                                    'maxconn 4096',
+                                    'maxconn 3072',
                                     'user haproxy',
                                     'group haproxy',
                                     'daemon',
