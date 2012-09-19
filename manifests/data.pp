@@ -46,7 +46,7 @@ class haproxy::data {
                                     'option httplog',
                                     'option dontlognull',
                                     'retries 3',
-                                    'maxconn 5000',
+                                    'maxconn 3072',
                                     'timeout connect 300s',
                                     'timeout client 300s',
                                     'timeout server 300s',
